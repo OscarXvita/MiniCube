@@ -1,0 +1,18 @@
+#!/bin/sh /etc/rc.common
+# /init.d/heartbeat 
+START=70
+start()
+{
+echo Heartbeat start!!!!!!
+string=`cat /sys/class/ieee80211/phy0/macaddress`
+string="$(echo $string | tr '[a-z]' '[A-Z]')"
+while true
+do
+echo -e -n '1234567890\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000\0000'$string'\0000\0000\0000\0000\0000\0000\0000'|nc -c -u -p13335 192.168.100.10 3338
+sleep 50
+echo KeepAlive Udp sent!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+done
+}
+stop(){
+killall heartbeat
+}

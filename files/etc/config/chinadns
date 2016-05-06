@@ -1,0 +1,8 @@
+
+config chinadns
+	option chnroute '/etc/chinadns_chnroute.txt'
+	option port '5353'
+	option bidirectional '1'
+	option server '114.114.114.114,208.67.222.222'
+	option enable '0'
+

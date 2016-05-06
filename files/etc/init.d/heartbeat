@@ -1,0 +1,36 @@
+#!/bin/sh /etc/rc.common
+# /init.d/heartbeat 
+START=70
+start()
+{
+echo Initializing Heartbeat!!!!!!
+macstr=`cat /sys/class/ieee80211/phy0/macaddress`
+macstr="$(echo $macstr | tr '[a-z]' '[A-Z]')"
+username=`uci get network.DeepBlue.username`
+
+if [ -z $username ]
+then
+username="1234567890"
+echo "No valid username configured! Falling Back... Please Set And Reboot!!!"
+fi
+
+echo The DeepBlue username is $username...
+echo "If it is not your username configured, please reboot!"
+
+for i in $(seq 0 $((31-${#username}))); do
+	#generate \0000 here...
+        strnull=$strnull"\0000"
+done
+#echo $strnull
+
+
+while true
+do
+echo -e -n $username$strnull$macstr'\0000\0000\0000\0000\0000\0000\0000'|nc -c -u -p13335 192.168.100.10 3338
+sleep 50
+echo ------Contacting DeepBlue Portal with $username and $macstr...------
+done
+}
+stop(){
+killall heartbeat
+}
