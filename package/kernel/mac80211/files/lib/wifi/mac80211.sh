@@ -115,14 +115,13 @@ config wifi-device  radio$devidx
 $dev_id
 $ht_capab
 	# REMOVE THIS LINE TO ENABLE WIFI:
-	option disabled 1
+	# option disabled 1
 
 config wifi-iface
 	option device   radio$devidx
 	option network  lan
 	option mode     ap
-	option ssid     OpenWrt
-	option encryption none
+	option ssid     MiniCube-$(cat /sys/class/ieee80211/phy0/macaddress|awk -F ":" '{print $5""$6}'|tr a-z A-Z)
 
 EOF
 	devidx=$(($devidx + 1))
